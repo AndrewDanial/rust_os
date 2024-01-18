@@ -16,18 +16,11 @@ pub extern "C" fn _start() -> ! {
 
     rustos::init();
 
-    unsafe {
-        *(0xdeadbeef as *mut u8) = 42;
-    };
-
-    //invoke a breakpoint exception
-    x86_64::instructions::interrupts::int3();
-
     #[cfg(test)]
     test_main();
 
     println!("It did not crash!");
-    loop {}
+    rustos::hlt_loop();
 }
 
 // this function is called on panic
@@ -35,7 +28,7 @@ pub extern "C" fn _start() -> ! {
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
     println!("{}", info);
-    loop {}
+    rustos::hlt_loop();
 }
 
 #[cfg(test)]
