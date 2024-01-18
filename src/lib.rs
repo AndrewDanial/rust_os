@@ -5,10 +5,10 @@
 #![reexport_test_harness_main = "test_main"]
 #![feature(abi_x86_interrupt)]
 
+pub mod gdt;
 pub mod interrupts;
 pub mod serial;
 pub mod vga_buffer;
-
 use core::panic::PanicInfo;
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(u32)]
@@ -78,5 +78,6 @@ fn test_breakpoint_exception() {
 }
 
 pub fn init() {
+    gdt::init();
     interrupts::init_idt();
 }
